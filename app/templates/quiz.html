@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm p-4 mb-4">
+  <h3>{{ quiz.title }}</h3>
+  <hr>
+  <form method="POST">
+    {% for question in quiz.questions %}
+      <div class="mb-3">
+        <p><strong>{{ loop.index }}. {{ question.text }}</strong></p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q{{ question.id }}" value="A" id="q{{ question.id }}A">
+          <label class="form-check-label" for="q{{ question.id }}A">{{ question.choice_a }}</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q{{ question.id }}" value="B" id="q{{ question.id }}B">
+          <label class="form-check-label" for="q{{ question.id }}B">{{ question.choice_b }}</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q{{ question.id }}" value="C" id="q{{ question.id }}C">
+          <label class="form-check-label" for="q{{ question.id }}C">{{ question.choice_c }}</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="q{{ question.id }}" value="D" id="q{{ question.id }}D">
+          <label class="form-check-label" for="q{{ question.id }}D">{{ question.choice_d }}</label>
+        </div>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success mt-3">Submit Quiz</button>
+  </form>
+  <a href="{{ url_for('main.course_detail', course_id=quiz.course.id) }}" class="btn btn-secondary mt-3">Back to Course</a>
+</div>
+{% endblock %}

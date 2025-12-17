@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm p-4">
+  <h3>Add New Lesson</h3>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.title.label(class="form-label") }}
+      {{ form.title(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.content.label(class="form-label") }}
+      {{ form.content(class="form-control", rows="4") }}
+    </div>
+    <div class="mb-3">
+      {{ form.course_id.label(class="form-label") }}
+      {{ form.course_id(class="form-select") }}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+  </form>
+  <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary mt-3">Back to Admin Dashboard</a>
+</div>
+{% endblock %}

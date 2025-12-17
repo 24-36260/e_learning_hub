@@ -1,0 +1,7 @@
+Flask==2.3.4
+Flask-Login==0.6.3
+Flask-WTF==1.1.1
+WTForms==3.0.1
+SQLAlchemy==2.0.22
+email_validator==2.4.2
+# ... any other packages you already have

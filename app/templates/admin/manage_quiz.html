@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm p-4">
+  <h3>Manage Quiz: {{ quiz.title }}</h3>
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Question</th>
+        <th>Correct Answer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for question in quiz.questions %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ question.text }}</td>
+        <td>{{ question.correct_choice }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary mt-3">Back to Admin Dashboard</a>
+</div>
+{% endblock %}
