@@ -1,44 +1,67 @@
--- User Table
-CREATE TABLE User (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    is_admin BOOLEAN DEFAULT 0
+CREATE TABLE users (
+user_id SERIAL PRIMARY KEY,
+full_name VARCHAR(150) NOT NULL,
+email VARCHAR(150) UNIQUE NOT NULL,
+password_hash TEXT NOT NULL,
+role VARCHAR(50) DEFAULT 'student',
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Course Table
-CREATE TABLE Course (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL
+CREATE TABLE courses (
+course_id SERIAL PRIMARY KEY,
+course_title VARCHAR(150) NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Lesson Table
-CREATE TABLE Lesson (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL,
-    course_id INTEGER NOT NULL,
-    FOREIGN KEY(course_id) REFERENCES Course(id) ON DELETE CASCADE
+CREATE TABLE materials (
+material_id SERIAL PRIMARY KEY,
+course_id INTEGER REFERENCES courses(course_id) ON DELETE CASCADE,
+title VARCHAR(150) NOT NULL,
+file_path TEXT NOT NULL,
+uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Quiz Table
-CREATE TABLE Quiz (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    course_id INTEGER NOT NULL,
-    FOREIGN KEY(course_id) REFERENCES Course(id) ON DELETE CASCADE
+CREATE TABLE quizzes (
+quiz_id SERIAL PRIMARY KEY,
+course_id INTEGER REFERENCES courses(course_id) ON DELETE CASCADE,
+quiz_title VARCHAR(150) NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
--- Question Table
-CREATE TABLE Question (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    text TEXT NOT NULL,
-    choice_a TEXT NOT NULL,
-    choice_b TEXT NOT NULL,
-    choice_c TEXT NOT NULL,
-    choice_d TEXT NOT NULL,
-    correct_choice TEXT NOT NULL,
-    quiz_id INTEGER NOT NULL,
-    FOREIGN KEY(quiz_id) REFERENCES Quiz(id) ON DELETE CASCADE
+CREATE TABLE quiz_questions (
+question_id SERIAL PRIMARY KEY,
+quiz_id INTEGER REFERENCES quizzes(quiz_id) ON DELETE CASCADE,
+question TEXT NOT NULL,
+option_a TEXT NOT NULL,
+option_b TEXT NOT NULL,
+option_c TEXT,
+option_d TEXT,
+correct_answer CHAR(1) CHECK (correct_answer IN ('A','B','C','D'))
+);
+CREATE TABLE quiz_attempts (
+attempt_id SERIAL PRIMARY KEY,
+user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+quiz_id INTEGER REFERENCES quizzes(quiz_id) ON DELETE CASCADE,
+score INTEGER NOT NULL,
+total_questions INTEGER NOT NULL,
+taken_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE progress (
+progress_id SERIAL PRIMARY KEY,
+user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+course_id INTEGER REFERENCES courses(course_id) ON DELETE CASCADE,
+completed BOOLEAN DEFAULT FALSE,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+UNIQUE (user_id, course_id)
+);
+CREATE TABLE forum_posts (
+post_id SERIAL PRIMARY KEY,
+user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+course_id INTEGER REFERENCES courses(course_id) ON DELETE CASCADE,
+title VARCHAR(150) NOT NULL,
+content TEXT NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE forum_replies (
+reply_id SERIAL PRIMARY KEY,
+post_id INTEGER REFERENCES forum_posts(post_id) ON DELETE CASCADE,
+user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+content TEXT NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
