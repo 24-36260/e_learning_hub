@@ -1,10 +1,4 @@
--- ========================================
--- E-Learning Hub Database Schema v1
--- ========================================
-
--- ----------------------
--- Users Table
--- ----------------------
+-- User Table
 CREATE TABLE User (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE,
@@ -12,18 +6,14 @@ CREATE TABLE User (
     is_admin BOOLEAN DEFAULT 0
 );
 
--- ----------------------
--- Courses Table
--- ----------------------
+-- Course Table
 CREATE TABLE Course (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     description TEXT NOT NULL
 );
 
--- ----------------------
--- Lessons Table
--- ----------------------
+-- Lesson Table
 CREATE TABLE Lesson (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
@@ -32,9 +22,7 @@ CREATE TABLE Lesson (
     FOREIGN KEY(course_id) REFERENCES Course(id) ON DELETE CASCADE
 );
 
--- ----------------------
--- Quizzes Table
--- ----------------------
+-- Quiz Table
 CREATE TABLE Quiz (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
@@ -42,9 +30,7 @@ CREATE TABLE Quiz (
     FOREIGN KEY(course_id) REFERENCES Course(id) ON DELETE CASCADE
 );
 
--- ----------------------
--- Questions Table
--- ----------------------
+-- Question Table
 CREATE TABLE Question (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     text TEXT NOT NULL,
